@@ -43,7 +43,5 @@ fn main() {
         .insert_resource(WgpuSettings{backends: None,..default()})
         .insert_resource(GameState {counter: 10})
         .add_plugins(DefaultPlugins)
-        .add_stage("AI",SystemStage::parallel())
-        .add_stage("SRS",SystemStage::parallel());
         .run();
 }
