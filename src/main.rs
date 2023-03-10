@@ -1,6 +1,6 @@
 use bevy::{
     prelude::*,
-    render::settings::WgpuSettings,
+    render::{settings::WgpuSettings, RenderPlugin},
 };
 
 #[derive(Resource)]
@@ -40,10 +40,10 @@ fn player_level_up(
 
 fn main() {
     App::new()
-        .insert_resource(WgpuSettings{backends: None,..default()})
         .insert_resource(GameState {counter: 10})
-        .add_plugins(DefaultPlugins)
-        .add_stage("AI",SystemStage::parallel())
-        .add_stage("SRS",SystemStage::parallel());
+        .add_plugins(DefaultPlugins
+            .set(
+                RenderPlugin { wgpu_settings: WgpuSettings { backends: None,..default() } }
+            ))
         .run();
 }
