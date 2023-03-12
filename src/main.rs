@@ -15,10 +15,12 @@ enum AppState {
 
 fn setup_demo_scene(mut commands: Commands, asset_server: Res<AssetServer>) {
     // TRIGGERS THE ERROR
-    commands.spawn(Collider::cuboid(0.5,0.5,0.5)).insert_bundle(TransformBundle::from(Transform::from_xyz(0.5,0.5,0.5)));
+    commands.spawn(Collider::cuboid(0.5,0.5,0.5));
     commands.spawn(SceneBundle {
         scene: asset_server.load("models/VisibleCube.glb#Scene0"),
         ..default()
+    }).with_children(|children| {
+        children.spawn(Collider::cuboid(0.5,0.5,0.5));
     });
     commands.spawn(PointLightBundle {
         transform: Transform::from_xyz(0.0,0.0,4.0),
@@ -39,7 +41,6 @@ fn setup_demo_scene(mut commands: Commands, asset_server: Res<AssetServer>) {
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
         .add_startup_system(setup_demo_scene)
         .run();
 }
