@@ -1,49 +1,45 @@
-use bevy::{
-    prelude::*,
-    render::{settings::WgpuSettings, RenderPlugin},
-};
+use bevy::prelude::*;
+use bevy_rapier3d::prelude::*;
 
-#[derive(Resource)]
-struct GameState {
-    counter: usize
+#[derive(Component)]
+struct Marker(bool);
+
+#[derive(States,Hash,Clone,PartialEq,Eq,Debug,Default)]
+enum AppState {
+    #[default]
+    DemoScene,
+    MissionSuccess,
+    MissionFailure,
+    CleanUp
 }
 
-/**
-fn spawn_tasks(mut commands: Commands) {
-    let thread_pool = AsyncComputeTaskPool::get();
-    for _x in 0..3 {
-        let task = thread_pool.spawn(async move{
-            let y: String = String::from("AI");
-            y
-        });
-        commands.spawn(ComputePrint(task));
-    }
+fn setup_demo_scene(mut commands: Commands, asset_server: Res<AssetServer>) {
+    // TRIGGERS THE ERROR
+    commands.spawn(Collider::cuboid(0.5,0.5,0.5)).insert_bundle(TransformBundle::from(Transform::from_xyz(0.5,0.5,0.5)));
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("models/VisibleCube.glb#Scene0"),
+        ..default()
+    });
+    commands.spawn(PointLightBundle {
+        transform: Transform::from_xyz(0.0,0.0,4.0),
+        point_light: PointLight {
+            intensity: 1000.0,
+            color: Color::GREEN,
+            shadows_enabled: false,
+            ..default()
+        },
+        ..default()
+    });
+    commands.spawn(Camera3dBundle {
+        transform: Transform::from_xyz(0.0,0.0,10.0).looking_at(Vec3::new(0.0,0.0,0.0),Vec3::Y),
+        ..default()
+    });
 }
-*/
-
-/*
-struct PlayerSpawnEvent(Entity);
-
-fn spawn_player(mut commands: Commands) {
-    commands.spawn(Player(0));
-}
-
-fn player_level_up(
-    mut ev_levelup: EventWriter<PlayerSpawnEvent>,
-    query: Query<(Entity,&Player)>
-) {
-    for (entity, _xp) in query.iter() {
-        ev_levelup.send(PlayerSpawnEvent(entity));
-    }
-}
-*/
 
 fn main() {
     App::new()
-        .insert_resource(GameState {counter: 10})
-        .add_plugins(DefaultPlugins
-            .set(
-                RenderPlugin { wgpu_settings: WgpuSettings { backends: None,..default() } }
-            ))
+        .add_plugins(DefaultPlugins)
+        .add_plugins(RapierPhysicsPlugin::<NoUserData>::default())
+        .add_startup_system(setup_demo_scene)
         .run();
 }
