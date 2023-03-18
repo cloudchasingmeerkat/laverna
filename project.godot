@@ -1,0 +1,36 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="laverna"
+run/main_scene="res://Boo.tscn"
+config/features=PackedStringArray("4.0", "C#", "Mobile")
+config/icon="res://icon.svg"
+
+[audio]
+
+buses/default_bus_layout="res://new_audio_bus_layout.tres"
+
+[display]
+
+window/vsync/vsync_mode=0
+
+[dotnet]
+
+project/assembly_name="laverna"
+
+[physics]
+
+common/max_physics_steps_per_frame=60
+
+[rendering]
+
+renderer/rendering_method="mobile"
