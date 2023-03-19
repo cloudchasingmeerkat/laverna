@@ -1,2 +1,2 @@
 # laverna
-Thief-inspired game based on the Bevy Engine
+Thief-inspired game created using [Godot game engine](https://godotengine.org/)
