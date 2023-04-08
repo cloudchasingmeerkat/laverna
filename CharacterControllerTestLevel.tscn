@@ -1,0 +1,106 @@
+[gd_scene load_steps=8 format=3 uid="uid://babhulfni1qvd"]
+
+[ext_resource type="Script" path="res://components/AutoSnapCamera.cs" id="1_u24mn"]
+[ext_resource type="Script" path="res://components/Collectible.cs" id="2_8lmdw"]
+[ext_resource type="PackedScene" uid="uid://b3gyibo5jg85h" path="res://PlayerCharacter.tscn" id="3_7ug1m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tll7y"]
+albedo_color = Color(0.117647, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjmr6"]
+albedo_color = Color(1, 0.482353, 0.0941176, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0tdb4"]
+albedo_color = Color(0.290196, 0.235294, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dga4d"]
+albedo_color = Color(1, 0.12549, 0.235294, 1)
+
+[node name="CharacterControllerTestLevel" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.93393, 0.357455, 0, -0.357455, 0.93393, 0, 5.00161, 6.82707)
+cull_mask = 1048063
+fov = 102.208
+
+[node name="AutoSnapCamera" type="Node" parent="Camera3D"]
+script = ExtResource("1_u24mn")
+
+[node name="Level" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 0.552301, 0.833645, 0, -0.833645, 0.552301, 0, 16.4888, 0)
+
+[node name="Wall" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.07692, -20.8981)
+use_collision = true
+size = Vector3(23.6537, 12.8174, 0.3)
+
+[node name="Collectible" type="CSGBox3D" parent="Level/Wall"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.64982, 0.364016)
+use_collision = true
+size = Vector3(2.365, 1.282, 0.3)
+material = SubResource("StandardMaterial3D_tll7y")
+
+[node name="Collectible" type="Node" parent="Level/Wall/Collectible"]
+script = ExtResource("2_8lmdw")
+
+[node name="Ground" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.191045, 0)
+use_collision = true
+size = Vector3(80, 0.3, 80)
+
+[node name="Platform3" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25014, 0)
+use_collision = true
+size = Vector3(15.1082, 1, 18.4685)
+material = SubResource("StandardMaterial3D_xjmr6")
+
+[node name="Ramp1" type="Node3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7686, 1.39814, 0)
+
+[node name="Ramp" type="CSGBox3D" parent="Level/Ramp1"]
+transform = Transform3D(0.9715, -0.237042, 0, 0.237042, 0.9715, 0, 0, 0, 1, 0, 0, 0)
+use_collision = true
+size = Vector3(15.1082, 1, 9.27193)
+material = SubResource("StandardMaterial3D_0tdb4")
+
+[node name="Platform" type="CSGBox3D" parent="Level/Ramp1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.7902, 1.70485, 0)
+use_collision = true
+size = Vector3(15.1082, 1, 9.09495)
+material = SubResource("StandardMaterial3D_0tdb4")
+
+[node name="Ramp2" type="Node3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.0761, 3.3144, 9.48619)
+
+[node name="Ramp" type="CSGBox3D" parent="Level/Ramp2"]
+transform = Transform3D(0.86239, -0.506245, 0, 0.506245, 0.86239, 0, 0, 0, 1, 0, 0, 0)
+use_collision = true
+size = Vector3(15.1082, 1, 9.27193)
+material = SubResource("StandardMaterial3D_dga4d")
+
+[node name="Platform" type="CSGBox3D" parent="Level/Ramp2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.8219, 3.64724, 0)
+use_collision = true
+size = Vector3(15.1082, 1, 9.09495)
+material = SubResource("StandardMaterial3D_dga4d")
+
+[node name="PedestalCollectible" type="Node3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.5356, 1.77432, -16.7338)
+
+[node name="Pedestal" type="CSGBox3D" parent="Level/PedestalCollectible"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.895647, 0)
+use_collision = true
+size = Vector3(1, 1.77556, 1)
+
+[node name="Collectible" type="CSGBox3D" parent="Level/PedestalCollectible"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.261549, 0)
+use_collision = true
+size = Vector3(0.5, 0.5, 0.5)
+material = SubResource("StandardMaterial3D_tll7y")
+
+[node name="Collectible" type="Node" parent="Level/PedestalCollectible/Collectible"]
+script = ExtResource("2_8lmdw")
+
+[node name="PlayerCharacter" parent="." instance=ExtResource("3_7ug1m")]
