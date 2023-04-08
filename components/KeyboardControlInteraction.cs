@@ -1,3 +1,4 @@
+using Components.Interaction;
 using Godot;
 
 using utilities;
@@ -7,10 +8,13 @@ namespace Components;
 public partial class KeyboardControlInteraction : Node
 {
     [Export] public RayCast3D Sensor;
+    
+    [Export] public PlayerCharacter Player;
 
     public override void _Ready()
     {
         Sensor = this.FindParentNodeIfNotSet(Sensor);
+        Player = this.FindParentNodeIfNotSet(Player);
     }
 
     public override void _Process(double delta)
@@ -19,10 +23,19 @@ public partial class KeyboardControlInteraction : Node
         {
             if (Sensor.GetCollider() is Node3D hit)
             {
-                if(hit.TryFindNodeInChildrenRecursively<Collectible>(out Collectible collectible))
+                IInteractible<PlayerCharacter> interactionTarget = null;
+
+                if(hit.TryFindNodeInChildrenRecursively<Collectible>(out var collectible))
                 {
-                    collectible.OnInteraction(this);
+                    interactionTarget = collectible;                    
                 }
+                if(hit.TryFindNodeInChildrenRecursively<Door>(out var door))
+                {
+                    interactionTarget = door;                    
+                }
+                
+                interactionTarget?.OnInteraction(Player);
+                return;
             }
         }
     }

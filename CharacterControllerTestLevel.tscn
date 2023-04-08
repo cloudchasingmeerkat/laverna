@@ -1,11 +1,51 @@
-[gd_scene load_steps=8 format=3 uid="uid://babhulfni1qvd"]
+[gd_scene load_steps=13 format=3 uid="uid://ddr0joebw86jg"]
 
 [ext_resource type="Script" path="res://components/AutoSnapCamera.cs" id="1_u24mn"]
-[ext_resource type="Script" path="res://components/Collectible.cs" id="2_8lmdw"]
+[ext_resource type="Script" path="res://components/interaction/Collectible.cs" id="2_ovrud"]
 [ext_resource type="PackedScene" uid="uid://b3gyibo5jg85h" path="res://PlayerCharacter.tscn" id="3_7ug1m"]
+[ext_resource type="Script" path="res://components/interaction/Door.cs" id="3_bxhm7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tll7y"]
 albedo_color = Color(0.117647, 1, 0, 1)
+
+[sub_resource type="Animation" id="Animation_wddsl"]
+resource_name = "DoorOpenAnimation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_t2r2j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_v04wm"]
+_data = {
+"DoorOpenAnimation": SubResource("Animation_wddsl"),
+"RESET": SubResource("Animation_t2r2j")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3b0wb"]
+albedo_color = Color(0.878431, 0, 0, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xjmr6"]
 albedo_color = Color(1, 0.482353, 0.0941176, 1)
@@ -43,7 +83,34 @@ size = Vector3(2.365, 1.282, 0.3)
 material = SubResource("StandardMaterial3D_tll7y")
 
 [node name="Collectible" type="Node" parent="Level/Wall/Collectible"]
-script = ExtResource("2_8lmdw")
+script = ExtResource("2_ovrud")
+
+[node name="Wall2" type="CSGBox3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.2569, 6.07692, -20.8981)
+use_collision = true
+size = Vector3(23.6537, 12.8174, 0.3)
+
+[node name="Door" type="Node3D" parent="Level"]
+transform = Transform3D(0.585082, 0, 0, 0, 0.587695, 0, 0, 0, 1, -13.117, 2.62151, -20.8981)
+
+[node name="AnimationPivot" type="Node3D" parent="Level/Door"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.38157, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Level/Door/AnimationPivot"]
+libraries = {
+"": SubResource("AnimationLibrary_v04wm")
+}
+
+[node name="Door" type="CSGBox3D" parent="Level/Door/AnimationPivot"]
+transform = Transform3D(0.95313, 0, 0, 0, 1, 0, 0, 0, 0.455531, -2.382, 0, 0)
+use_collision = true
+size = Vector3(4.66565, 8.80973, 0.865201)
+material = SubResource("StandardMaterial3D_3b0wb")
+
+[node name="Door" type="Node" parent="Level/Door/AnimationPivot/Door" node_paths=PackedStringArray("DoorVisual", "DoorAnimationPlayer")]
+script = ExtResource("3_bxhm7")
+DoorVisual = NodePath("..")
+DoorAnimationPlayer = NodePath("../../AnimationPlayer")
 
 [node name="Ground" type="CSGBox3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.191045, 0)
@@ -101,6 +168,6 @@ size = Vector3(0.5, 0.5, 0.5)
 material = SubResource("StandardMaterial3D_tll7y")
 
 [node name="Collectible" type="Node" parent="Level/PedestalCollectible/Collectible"]
-script = ExtResource("2_8lmdw")
+script = ExtResource("2_ovrud")
 
 [node name="PlayerCharacter" parent="." instance=ExtResource("3_7ug1m")]
