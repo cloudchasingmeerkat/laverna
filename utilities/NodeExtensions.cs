@@ -6,7 +6,7 @@ namespace utilities;
 public static class NodeExtensions {
 
     public static bool TryFindParentNode<T>(this Node node, out T parentNode)
-        where T : Node
+        where T : class
     {
         Node parent;
         
@@ -30,7 +30,7 @@ public static class NodeExtensions {
     }
     
     public static T FindParentNodeIfNotSet<T>(this Node node, T value)
-        where T : Node
+        where T : class
     {
         if (value is not null)
         {
@@ -71,7 +71,8 @@ public static class NodeExtensions {
 
         foreach (var child in node.GetChildren())
         {
-            if(child.TryFindNodeInChildrenRecursively(out value, filter)){
+            if(child.TryFindNodeInChildrenRecursively(out value, filter))
+            {
                 return true;
             }
         }
