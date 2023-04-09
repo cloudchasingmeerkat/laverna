@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b3gyibo5jg85h"]
+[gd_scene load_steps=13 format=3 uid="uid://b3gyibo5jg85h"]
 
 [ext_resource type="Script" path="res://components/PlayerCharacter.cs" id="1_dfyae"]
 [ext_resource type="Script" path="res://components/AutoSnapCameraPivot.cs" id="2_7vqf0"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://components/MouseControlRotationHorizontal.cs" id="8_xa0n5"]
 [ext_resource type="Script" path="res://components/KeyboardToggleMouseCapture.cs" id="9_mpts7"]
 [ext_resource type="Script" path="res://components/MouseCaptureOnStart.cs" id="10_02iwo"]
+[ext_resource type="Script" path="res://components/MouseUncaptureOnLooseFocus.cs" id="11_ikv2a"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5ad0y"]
 radius = 0.52813
@@ -57,7 +58,7 @@ script = ExtResource("6_euj6c")
 [node name="KeyboardControlJump" type="Node" parent="."]
 script = ExtResource("7_trwty")
 
-[node name="MouseControlRotation" type="Node" parent="."]
+[node name="MouseControlRotationHorizontal" type="Node" parent="."]
 script = ExtResource("8_xa0n5")
 
 [node name="KeyboardToggleMouseCapture" type="Node" parent="."]
@@ -65,3 +66,6 @@ script = ExtResource("9_mpts7")
 
 [node name="MouseCaptureOnStart" type="Node" parent="."]
 script = ExtResource("10_02iwo")
+
+[node name="MouseUncaptureOnLooseFocus" type="Node" parent="."]
+script = ExtResource("11_ikv2a")
