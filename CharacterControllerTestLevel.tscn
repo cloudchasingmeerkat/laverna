@@ -1,9 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://ddr0joebw86jg"]
+[gd_scene load_steps=14 format=3 uid="uid://ddr0joebw86jg"]
 
 [ext_resource type="Script" path="res://components/AutoSnapCamera.cs" id="1_u24mn"]
 [ext_resource type="Script" path="res://components/interaction/Collectible.cs" id="2_ovrud"]
-[ext_resource type="PackedScene" uid="uid://b3gyibo5jg85h" path="res://PlayerCharacter.tscn" id="3_7ug1m"]
 [ext_resource type="Script" path="res://components/interaction/Door.cs" id="3_bxhm7"]
+[ext_resource type="PackedScene" uid="uid://dxii6nyaofxht" path="res://entities/Enemy.tscn" id="4_tajvd"]
+[ext_resource type="PackedScene" uid="uid://b3gyibo5jg85h" path="res://entities/PlayerCharacter.tscn" id="5_bt4qy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tll7y"]
 albedo_color = Color(0.117647, 1, 0, 1)
@@ -170,4 +171,6 @@ material = SubResource("StandardMaterial3D_tll7y")
 [node name="Collectible" type="Node" parent="Level/PedestalCollectible/Collectible"]
 script = ExtResource("2_ovrud")
 
-[node name="PlayerCharacter" parent="." instance=ExtResource("3_7ug1m")]
+[node name="Enemy" parent="Level" instance=ExtResource("4_tajvd")]
+
+[node name="PlayerCharacter" parent="Level" instance=ExtResource("5_bt4qy")]

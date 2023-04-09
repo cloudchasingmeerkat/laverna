@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://dxii6nyaofxht"]
+
+[ext_resource type="Script" path="res://components/AppliedGravity.cs" id="1_qatod"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ttyow"]
+albedo_color = Color(0.596078, 0.427451, 0.0941176, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5ad0y"]
+radius = 0.52813
+height = 3.05342
+
+[node name="Enemy" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5955, 3.36182, -19.5423)
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03799, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Head"]
+size = Vector3(0.717411, 0.576716, 1)
+material = SubResource("StandardMaterial3D_ttyow")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453926, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Body"]
+size = Vector3(1, 2.15484, 1)
+material = SubResource("StandardMaterial3D_ttyow")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_5ad0y")
+
+[node name="AppliedGravity" type="Node" parent="."]
+script = ExtResource("1_qatod")
