@@ -1,4 +1,5 @@
 using Godot;
+using utilities;
 
 namespace Components;
 
@@ -19,9 +20,7 @@ public partial class Enemy : CharacterBody3D
 
     public override void _Ready()
     {
-        base._Ready();
-
-        _navigationAgent = GetNode<NavigationAgent3D>("NavigationAgent3D");
+        this.TryFindNodeInChildrenRecursively(out _navigationAgent);
 
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
@@ -34,8 +33,6 @@ public partial class Enemy : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
-        base._PhysicsProcess(delta);
-		
 		if(target is not null)
 		{
 			MovementTarget = target.GlobalPosition;
@@ -48,8 +45,10 @@ public partial class Enemy : CharacterBody3D
 			GD.Print("Navigation finished");
             return;
         }
+        
 
-        Vector3 currentAgentPosition = GlobalPosition;
+
+        Vector3 currentAgentPosition = GetNode<Node3D>("CollisionShape3D/NavigationAnchor").GlobalPosition;
         Vector3 nextPathPosition = _navigationAgent.GetNextPathPosition();
 
         //GD.Print(_navigationAgent.GetCurrentNavigationPathIndex());
@@ -61,9 +60,8 @@ public partial class Enemy : CharacterBody3D
         Vector3 newVelocity = (nextPathPosition - currentAgentPosition).Normalized();
         newVelocity *= _movementSpeed;
         
-        //GD.Print(newVelocity);
-
         Velocity = new Vector3(newVelocity.X, 0f, newVelocity.Z);
+        //Velocity = newVelocity;
 
         MoveAndSlide();
     }

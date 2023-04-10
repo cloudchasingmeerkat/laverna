@@ -74,7 +74,7 @@ albedo_color = Color(0.596078, 0.427451, 0.0941176, 1)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5ad0y"]
 radius = 0.52813
-height = 3.11961
+height = 3.06302
 
 [node name="CharacterControllerTestLevel" type="Node3D"]
 
@@ -197,7 +197,7 @@ material = SubResource("StandardMaterial3D_tll7y")
 script = ExtResource("2_ovrud")
 
 [node name="Enemy" type="CharacterBody3D" parent="Level" node_paths=PackedStringArray("target")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.0573, 7.30461, -19.5423)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.057, 1.50644, -19.542)
 script = ExtResource("4_h6ppp")
 target = NodePath("../PlayerCharacter")
 
@@ -216,18 +216,21 @@ size = Vector3(1, 2.15484, 1)
 material = SubResource("StandardMaterial3D_ttyow")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Level/Enemy"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
 shape = SubResource("CapsuleShape3D_5ad0y")
+
+[node name="NavigationAnchor" type="Node3D" parent="Level/Enemy/CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.36, 0)
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Level/Enemy/CollisionShape3D/NavigationAnchor"]
+debug_enabled = true
 
 [node name="AppliedGravity" type="Node" parent="Level/Enemy"]
 script = ExtResource("5_yabps")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Level/Enemy"]
-agent_height_offset = -1.0
-path_max_distance = 0.21
-debug_enabled = true
 
 [node name="Ai" type="Node" parent="Level/Enemy"]
 
 [node name="PlayerCharacter" parent="Level" instance=ExtResource("5_bt4qy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.5803, 0)
+
+[node name="Node3D" type="Node3D" parent="Level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.057, 2.78539, -19.542)
