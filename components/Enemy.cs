@@ -1,55 +1,77 @@
+using System.Collections.Generic;
+using System.Linq;
+using Components.Ai;
+using Components.Ai.Interests;
 using Godot;
 using utilities;
 
 namespace Components;
 
-public partial class Enemy : CharacterBody3D
+public partial class Enemy : CharacterBody3D, IAiAgent
 {
-    private NavigationAgent3D _navigationAgent;
+    [Export] public NavigationAgent3D NavigationAgent;
+    [Export] public Node3D NavigationAnchor;
 
-    private float _movementSpeed = 5.0f;
-    private Vector3 _movementTargetPosition = new(15f, 3.362f, 20f);
+    [Export] public float MovementSpeed = 5.0f;
 	
-	[Export] public Node3D target;
+	[Export] public PlayerCharacter PlayerCharacter;
 
-    public Vector3 MovementTarget
-    {
-        get { return _navigationAgent.TargetPosition; }
-        set { _navigationAgent.TargetPosition = value; }
-    }
+    public AiInterestCollection Interests { get; set; } = new();
 
     public override void _Ready()
     {
-        this.TryFindNodeInChildrenRecursively(out _navigationAgent);
+        // TODO check if this is set in editor
+        this.TryFindNodeInChildrenRecursively(out NavigationAgent);
+        
+        // TODO check if this is set in editor
+        this.TryFindNodeInScene(out PlayerCharacter);
+        
+        NavigationAnchor = GetNode<Node3D>("CollisionShape3D/NavigationAnchor");
 
         // These values need to be adjusted for the actor's speed
         // and the navigation layout.
-        _navigationAgent.PathDesiredDistance = 0.5f;
-        _navigationAgent.TargetDesiredDistance = 0.5f;
+        NavigationAgent.PathDesiredDistance = 0.5f;
+        NavigationAgent.TargetDesiredDistance = 0.5f;
 
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
+        
+        var seekPlayerInterest = new SeekPlayerInterest(PlayerCharacter, NavigationAnchor, NavigationAgent);
+        
+        Interests.AddInterest(seekPlayerInterest);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-		if(target is not null)
-		{
-			MovementTarget = target.GlobalPosition;
-		}
+        // NOTE this is set by Interests
+		// if(target is not null)
+		// {
+		// 	MovementTarget = target.GlobalPosition;
+		// }
 		
 		// GD.Print($"Target: {MovementTarget}");
 
-        if (_navigationAgent.IsNavigationFinished())
+        // if (NavigationAgent.IsNavigationFinished())
+        // {
+		// 	GD.Print("Navigation finished");
+        //     return;
+        // }
+        
+        var interests = Interests.GetAchievableInterests(this);
+        
+        var chosenInterest = interests.FirstOrDefault();
+        
+        chosenInterest?.Achieve(this);
+        
+        if(NavigationAgent.IsNavigationFinished())
         {
-			GD.Print("Navigation finished");
             return;
         }
         
-
-
-        Vector3 currentAgentPosition = GetNode<Node3D>("CollisionShape3D/NavigationAnchor").GlobalPosition;
-        Vector3 nextPathPosition = _navigationAgent.GetNextPathPosition();
+        Vector3 currentAgentPosition = NavigationAnchor.GlobalPosition;
+        Vector3 nextPathPosition = NavigationAgent.GetNextPathPosition();
+        
+        //GD.Print(NavigationAgent.GetCurrentNavigationPath().Length);
 
         //GD.Print(_navigationAgent.GetCurrentNavigationPathIndex());
         //GD.Print(_navigationAgent.GetCurrentNavigationPath());
@@ -58,10 +80,9 @@ public partial class Enemy : CharacterBody3D
 		// GD.Print($"NextPosition: {nextPathPosition}");
 
         Vector3 newVelocity = (nextPathPosition - currentAgentPosition).Normalized();
-        newVelocity *= _movementSpeed;
+        newVelocity *= MovementSpeed;
         
         Velocity = new Vector3(newVelocity.X, 0f, newVelocity.Z);
-        //Velocity = newVelocity;
 
         MoveAndSlide();
     }
@@ -70,8 +91,5 @@ public partial class Enemy : CharacterBody3D
     {
         // Wait for the first physics frame so the NavigationServer can sync.
         await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
-
-        // Now that the navigation map is no longer empty, set the movement target.
-        MovementTarget = _movementTargetPosition;
     }
 }

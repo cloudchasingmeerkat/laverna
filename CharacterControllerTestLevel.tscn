@@ -196,10 +196,26 @@ material = SubResource("StandardMaterial3D_tll7y")
 [node name="Collectible" type="Node" parent="Level/NavigationRegion3D/PedestalCollectible/Collectible"]
 script = ExtResource("2_ovrud")
 
-[node name="Enemy" type="CharacterBody3D" parent="Level" node_paths=PackedStringArray("target")]
+[node name="PatrolPath" type="Node3D" parent="Level/NavigationRegion3D"]
+
+[node name="AiWaypoint" type="Node3D" parent="Level/NavigationRegion3D/PatrolPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.4385, 0, -13.9707)
+
+[node name="AiWaypoint2" type="Node3D" parent="Level/NavigationRegion3D/PatrolPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.1969, 5.58209, 0.737344)
+
+[node name="AiWaypoint3" type="Node3D" parent="Level/NavigationRegion3D/PatrolPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0925, 0, 17.61)
+
+[node name="AiWaypoint4" type="Node3D" parent="Level/NavigationRegion3D/PatrolPath"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.7161, 0, -13.2871)
+
+[node name="Enemy" type="CharacterBody3D" parent="Level" node_paths=PackedStringArray("NavigationAgent", "NavigationAnchor", "PlayerCharacter")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.057, 1.50644, -19.542)
 script = ExtResource("4_h6ppp")
-target = NodePath("../PlayerCharacter")
+NavigationAgent = NodePath("CollisionShape3D/NavigationAnchor/NavigationAgent3D")
+NavigationAnchor = NodePath("CollisionShape3D/NavigationAnchor")
+PlayerCharacter = NodePath("../PlayerCharacter")
 
 [node name="Head" type="Node3D" parent="Level/Enemy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03799, 0)
