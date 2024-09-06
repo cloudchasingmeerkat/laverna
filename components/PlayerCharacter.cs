@@ -4,7 +4,7 @@ using System;
 
 namespace Components;
 
-public partial class PlayerCharacter : CharacterBody3D, IInteractionSource
+public partial class PlayerCharacter : CharacterBody3D
 {
 	[Export] public int Money;
 	
