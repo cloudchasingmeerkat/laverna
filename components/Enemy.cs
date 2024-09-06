@@ -1,13 +1,10 @@
-using System.Collections.Generic;
 using System.Linq;
-using Components.Ai;
-using Components.Ai.Interests;
 using Godot;
 using utilities;
 
 namespace Components;
 
-public partial class Enemy : CharacterBody3D, IAiAgent
+public partial class Enemy : CharacterBody3D
 {
     [Export] public NavigationAgent3D NavigationAgent;
     [Export] public Node3D NavigationAnchor;
@@ -15,8 +12,6 @@ public partial class Enemy : CharacterBody3D, IAiAgent
     [Export] public float MovementSpeed = 5.0f;
 	
 	[Export] public PlayerCharacter PlayerCharacter;
-
-    public AiInterestCollection Interests { get; set; } = new();
 
     public override void _Ready()
     {
@@ -35,49 +30,20 @@ public partial class Enemy : CharacterBody3D, IAiAgent
 
         // Make sure to not await during _Ready.
         Callable.From(ActorSetup).CallDeferred();
-        
-        var seekPlayerInterest = new SeekPlayerInterest(PlayerCharacter, NavigationAnchor, NavigationAgent);
-        
-        Interests.AddInterest(seekPlayerInterest);
     }
 
     public override void _PhysicsProcess(double delta)
     {
-        // NOTE this is set by Interests
-		// if(target is not null)
-		// {
-		// 	MovementTarget = target.GlobalPosition;
-		// }
-		
-		// GD.Print($"Target: {MovementTarget}");
-
-        // if (NavigationAgent.IsNavigationFinished())
-        // {
-		// 	GD.Print("Navigation finished");
-        //     return;
-        // }
-        
-        var interests = Interests.GetAchievableInterests(this);
-        
-        var chosenInterest = interests.FirstOrDefault();
-        
-        chosenInterest?.Achieve(this);
-        
         if(NavigationAgent.IsNavigationFinished())
         {
             return;
         }
+
+        // TODO: implement player seeking
+        // NavigationAgent.TargetPosition = PlayerCharacter.GlobalPosition;
         
         Vector3 currentAgentPosition = NavigationAnchor.GlobalPosition;
         Vector3 nextPathPosition = NavigationAgent.GetNextPathPosition();
-        
-        //GD.Print(NavigationAgent.GetCurrentNavigationPath().Length);
-
-        //GD.Print(_navigationAgent.GetCurrentNavigationPathIndex());
-        //GD.Print(_navigationAgent.GetCurrentNavigationPath());
-		
-		// GD.Print($"CurrentPosition: {nextPathPosition}");
-		// GD.Print($"NextPosition: {nextPathPosition}");
 
         Vector3 newVelocity = (nextPathPosition - currentAgentPosition).Normalized();
         newVelocity *= MovementSpeed;
