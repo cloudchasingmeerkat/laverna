@@ -32,11 +32,14 @@ script = ExtResource("2_k2023")
 [node name="InteractionRayCast" type="RayCast3D" parent="Head"]
 target_position = Vector3(0, 0, -5)
 
-[node name="KeyboardControlInteraction" type="Node" parent="Head/InteractionRayCast"]
+[node name="KeyboardControlInteraction" type="Node" parent="Head/InteractionRayCast" node_paths=PackedStringArray("Sensor", "Player")]
 script = ExtResource("3_u3jho")
+Sensor = NodePath("..")
+Player = NodePath("../../..")
 
-[node name="MouseControlRotationVertical" type="Node" parent="Head"]
+[node name="MouseControlRotationVertical" type="Node" parent="Head" node_paths=PackedStringArray("Target")]
 script = ExtResource("4_wxoah")
+Target = NodePath("..")
 
 [node name="Body" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453926, 0)
@@ -48,17 +51,21 @@ size = Vector3(1, 2.15484, 1)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_5ad0y")
 
-[node name="AppliedGravity" type="Node" parent="."]
+[node name="AppliedGravity" type="Node" parent="." node_paths=PackedStringArray("Target")]
 script = ExtResource("5_pka84")
+Target = NodePath("..")
 
-[node name="KeyboardControlHorizontal" type="Node" parent="."]
+[node name="KeyboardControlHorizontal" type="Node" parent="." node_paths=PackedStringArray("Target")]
 script = ExtResource("6_2gg21")
+Target = NodePath("..")
 
-[node name="KeyboardControlJump" type="Node" parent="."]
+[node name="KeyboardControlJump" type="Node" parent="." node_paths=PackedStringArray("Target")]
 script = ExtResource("7_pyg3h")
+Target = NodePath("..")
 
-[node name="MouseControlRotation" type="Node" parent="."]
+[node name="MouseControlRotation" type="Node" parent="." node_paths=PackedStringArray("Target")]
 script = ExtResource("8_ws171")
+Target = NodePath("..")
 
 [node name="KeyboardToggleMouseCapture" type="Node" parent="."]
 script = ExtResource("9_gh65r")
