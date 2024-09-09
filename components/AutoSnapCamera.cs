@@ -5,9 +5,11 @@ namespace Components;
 
 public partial class AutoSnapCamera : Node
 {
-    [Export] public Camera3D Camera;
+    [Export]
+    public Camera3D Camera;
 
-    [Export] public AutoSnapCameraPivot TargetPivot;
+    [Export]
+    public AutoSnapCameraPivot TargetPivot;
 
     private bool movedCamera = false;
 
@@ -18,7 +20,7 @@ public partial class AutoSnapCamera : Node
 
     public bool TrySnapToActivePivotInScene()
     {
-        if(this.TryFindNodeInScene(out TargetPivot, (pivot) => pivot.Active))
+        if (this.TryFindNodeInScene(out TargetPivot, (pivot) => pivot.Active))
         {
             Camera.Transform = Transform3D.Identity;
 
@@ -32,11 +34,13 @@ public partial class AutoSnapCamera : Node
 
     public override void _Process(double delta)
     {
-        if(!movedCamera)
+        if (!movedCamera)
         {
-            if(!TrySnapToActivePivotInScene())
+            if (!TrySnapToActivePivotInScene())
             {
-                GD.PrintErr($"Camera {Camera.GetPath()} did not find a valid {nameof(AutoSnapCameraPivot)} to snap to");
+                GD.PrintErr(
+                    $"Camera {Camera.GetPath()} did not find a valid {nameof(AutoSnapCameraPivot)} to snap to"
+                );
             }
 
             movedCamera = true;

@@ -1,15 +1,15 @@
-using Godot;
 using System;
+using Godot;
 
 namespace utilities;
 
-public static class NodeExtensions {
-
+public static class NodeExtensions
+{
     public static bool TryFindParentNode<T>(this Node node, out T parentNode)
         where T : class
     {
         Node parent;
-        
+
         if ((parent = node.GetParent()) != null)
         {
             if (parent is T)
@@ -22,13 +22,13 @@ public static class NodeExtensions {
                 return parent.TryFindParentNode(out parentNode);
             }
         }
-        else 
+        else
         {
             parentNode = null;
             return false;
         }
     }
-    
+
     public static T FindParentNodeIfNotSet<T>(this Node node, T value)
         where T : class
     {
@@ -38,13 +38,15 @@ public static class NodeExtensions {
         }
         else
         {
-            if(node.TryFindParentNode<T>(out var parentValue))
+            if (node.TryFindParentNode<T>(out var parentValue))
             {
                 return parentValue;
             }
             else
             {
-                throw new ArgumentException($"Could not find a suitable parent class {typeof(T).Name} for node {node.GetPath()}");
+                throw new ArgumentException(
+                    $"Could not find a suitable parent class {typeof(T).Name} for node {node.GetPath()}"
+                );
             }
         }
     }
@@ -53,17 +55,21 @@ public static class NodeExtensions {
     {
         return node.GetTree().Root.GetChild(0);
     }
-    
+
     public static bool TryFindNodeInChildrenRecursively<T>(this Node node, out T value)
         where T : class
     {
         return node.TryFindNodeInChildrenRecursively(out value, (_) => true);
     }
 
-    public static bool TryFindNodeInChildrenRecursively<T>(this Node node, out T value, Func<T, bool> filter)
+    public static bool TryFindNodeInChildrenRecursively<T>(
+        this Node node,
+        out T value,
+        Func<T, bool> filter
+    )
         where T : class
     {
-        if(node is T && filter(node as T))
+        if (node is T && filter(node as T))
         {
             value = node as T;
             return true;
@@ -71,39 +77,39 @@ public static class NodeExtensions {
 
         foreach (var child in node.GetChildren())
         {
-            if(child.TryFindNodeInChildrenRecursively(out value, filter))
+            if (child.TryFindNodeInChildrenRecursively(out value, filter))
             {
                 return true;
             }
         }
-        
+
         value = null;
         return false;
-    } 
+    }
 
     public static bool TryFindNodeInScene<T>(this Node node, out T value)
         where T : class
-    { 
+    {
         var root = node.GetSceneRoot();
-        
+
         return root.TryFindNodeInChildrenRecursively(out value);
     }
 
     public static bool TryFindNodeInScene<T>(this Node node, out T value, Func<T, bool> filter)
         where T : class
-    { 
+    {
         var root = node.GetSceneRoot();
-        
+
         return root.TryFindNodeInChildrenRecursively(out value, filter);
     }
-    
+
     public static void MoveToParent(this Node node, Node target)
     {
         var sourceTarget = node.GetParent();
         sourceTarget.RemoveChild(node);
         target.AddChild(node);
     }
-    
+
     public static void ResetRotation<T>(this T node)
         where T : Node3D
     {

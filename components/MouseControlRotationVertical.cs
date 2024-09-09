@@ -1,17 +1,19 @@
 using Godot;
-using static Godot.Mathf;
-
 using utilities;
+using static Godot.Mathf;
 
 namespace Components;
 
 public partial class MouseControlRotationVertical : Node
 {
-    [Export] public bool Active = true;
+    [Export]
+    public bool Active = true;
 
-    [Export] public Node3D Target;
+    [Export]
+    public Node3D Target;
 
-    [Export] public float MouseSensitivity = 0.3f;
+    [Export]
+    public float MouseSensitivity = 0.3f;
 
     private float _rotationXAccumulated = 0f;
 
@@ -22,7 +24,11 @@ public partial class MouseControlRotationVertical : Node
 
     public override void _Input(InputEvent inputEvent)
     {
-        if (Active && InputExtensions.IsMouseCaptured() && inputEvent is InputEventMouseMotion mouseMotion)
+        if (
+            Active
+            && InputExtensions.IsMouseCaptured()
+            && inputEvent is InputEventMouseMotion mouseMotion
+        )
         {
             _rotationXAccumulated += MouseSensitivity * mouseMotion.AsRotation3dDeg().X;
 

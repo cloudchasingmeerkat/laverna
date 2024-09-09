@@ -1,14 +1,15 @@
 using Godot;
-
 using utilities;
 
 namespace Components;
 
 public partial class KeyboardControlJump : Node
 {
-    [Export] public CharacterBody3D Target;
+    [Export]
+    public CharacterBody3D Target;
 
-    [Export] public int JumpHeight = 200;
+    [Export]
+    public int JumpHeight = 200;
 
     public override void _Ready()
     {
