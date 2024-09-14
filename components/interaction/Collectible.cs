@@ -1,18 +1,20 @@
-using Godot;
 using Components.Interaction;
-
+using Godot;
 using utilities;
 
 namespace Components;
 
 public partial class Collectible : Node, IInteractible<PlayerCharacter>
 {
-	[Export] public CsgShape3D CollectibleVisual;
-    
-	[Export] public int MonetaryValue = 30;
+    [Export]
+    public CsgShape3D CollectibleVisual;
 
-	[Export] public bool Collected;
-	
+    [Export]
+    public int MonetaryValue = 30;
+
+    [Export]
+    public bool Collected;
+
     public override void _Ready()
     {
         CollectibleVisual = this.FindParentNodeIfNotSet(CollectibleVisual);

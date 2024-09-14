@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://b3gyibo5jg85h"]
+
+[ext_resource type="Script" path="res://components/PlayerCharacter.cs" id="1_lv1sp"]
+[ext_resource type="Script" path="res://components/AutoSnapCameraPivot.cs" id="2_k2023"]
+[ext_resource type="Script" path="res://components/KeyboardControlInteraction.cs" id="3_u3jho"]
+[ext_resource type="Script" path="res://components/MouseControlRotationVertical.cs" id="4_wxoah"]
+[ext_resource type="Script" path="res://components/AppliedGravity.cs" id="5_pka84"]
+[ext_resource type="Script" path="res://components/KeyboardControlHorizontal.cs" id="6_2gg21"]
+[ext_resource type="Script" path="res://components/KeyboardControlJump.cs" id="7_pyg3h"]
+[ext_resource type="Script" path="res://components/MouseControlRotationHorizontal.cs" id="8_ws171"]
+[ext_resource type="Script" path="res://components/KeyboardToggleMouseCapture.cs" id="9_gh65r"]
+[ext_resource type="Script" path="res://components/MouseCaptureOnStart.cs" id="10_ayv2t"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5ad0y"]
+radius = 0.52813
+height = 3.05342
+
+[node name="PlayerCharacter" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.0613, 0)
+script = ExtResource("1_lv1sp")
+
+[node name="Head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03799, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Head"]
+size = Vector3(0.717411, 0.576716, 1)
+
+[node name="AutoSnapCameraPivot" type="Node3D" parent="Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.443707)
+script = ExtResource("2_k2023")
+
+[node name="InteractionRayCast" type="RayCast3D" parent="Head"]
+target_position = Vector3(0, 0, -5)
+
+[node name="KeyboardControlInteraction" type="Node" parent="Head/InteractionRayCast" node_paths=PackedStringArray("Sensor", "Player")]
+script = ExtResource("3_u3jho")
+Sensor = NodePath("..")
+Player = NodePath("../../..")
+
+[node name="MouseControlRotationVertical" type="Node" parent="Head" node_paths=PackedStringArray("Target")]
+script = ExtResource("4_wxoah")
+Target = NodePath("..")
+
+[node name="Body" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.453926, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Body"]
+layers = 512
+size = Vector3(1, 2.15484, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_5ad0y")
+
+[node name="AppliedGravity" type="Node" parent="." node_paths=PackedStringArray("Target")]
+script = ExtResource("5_pka84")
+Target = NodePath("..")
+
+[node name="KeyboardControlHorizontal" type="Node" parent="." node_paths=PackedStringArray("Target")]
+script = ExtResource("6_2gg21")
+Target = NodePath("..")
+
+[node name="KeyboardControlJump" type="Node" parent="." node_paths=PackedStringArray("Target")]
+script = ExtResource("7_pyg3h")
+Target = NodePath("..")
+
+[node name="MouseControlRotation" type="Node" parent="." node_paths=PackedStringArray("Target")]
+script = ExtResource("8_ws171")
+Target = NodePath("..")
+
+[node name="KeyboardToggleMouseCapture" type="Node" parent="."]
+script = ExtResource("9_gh65r")
+
+[node name="MouseCaptureOnStart" type="Node" parent="."]
+script = ExtResource("10_ayv2t")

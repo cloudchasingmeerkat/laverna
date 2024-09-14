@@ -4,5 +4,6 @@ namespace Components;
 
 public partial class AutoSnapCameraPivot : Node3D
 {
-	[Export] public bool Active = true;
+    [Export]
+    public bool Active = true;
 }
