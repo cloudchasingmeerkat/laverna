@@ -134,9 +134,8 @@ use_collision = true
 size = Vector3(4.66565, 8.80973, 0.865201)
 material = SubResource("StandardMaterial3D_3b0wb")
 
-[node name="Door" type="Node" parent="Level/NavigationRegion3D/Door/AnimationPivot/Door" node_paths=PackedStringArray("DoorVisual", "DoorAnimationPlayer")]
+[node name="Door" type="Node" parent="Level/NavigationRegion3D/Door/AnimationPivot/Door" node_paths=PackedStringArray("DoorAnimationPlayer")]
 script = ExtResource("3_bxhm7")
-DoorVisual = NodePath("..")
 DoorAnimationPlayer = NodePath("../../AnimationPlayer")
 
 [node name="Ground" type="CSGBox3D" parent="Level/NavigationRegion3D"]
@@ -210,11 +209,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.0925, 0, 17.61)
 [node name="AiWaypoint4" type="Node3D" parent="Level/NavigationRegion3D/PatrolPath"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.7161, 0, -13.2871)
 
-[node name="Enemy" type="CharacterBody3D" parent="Level" node_paths=PackedStringArray("NavigationAgent", "NavigationAnchor", "PlayerCharacter")]
+[node name="Enemy" type="CharacterBody3D" parent="Level" node_paths=PackedStringArray("NavigationAgent", "NavigationAnchor", "PatrolPath", "PlayerCharacter")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.057, 1.50644, -19.542)
 script = ExtResource("4_h6ppp")
 NavigationAgent = NodePath("CollisionShape3D/NavigationAnchor/NavigationAgent3D")
 NavigationAnchor = NodePath("CollisionShape3D/NavigationAnchor")
+PatrolPath = [NodePath("../PatrolWaypoints/Waypoint 1"), NodePath("../PatrolWaypoints/Waypoint 2"), NodePath("../PatrolWaypoints/Waypoint 3"), NodePath("../PatrolWaypoints/Waypoint 4")]
 PlayerCharacter = NodePath("../PlayerCharacter")
 
 [node name="Head" type="Node3D" parent="Level/Enemy"]
@@ -244,10 +244,22 @@ debug_enabled = true
 script = ExtResource("5_yabps")
 Target = NodePath("..")
 
-[node name="Ai" type="Node" parent="Level/Enemy"]
-
 [node name="PlayerCharacter" parent="Level" instance=ExtResource("5_bt4qy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.5803, 0)
 
 [node name="Node3D" type="Node3D" parent="Level"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.057, 2.78539, -19.542)
+
+[node name="PatrolWaypoints" type="Node3D" parent="Level"]
+
+[node name="Waypoint 1" type="Node3D" parent="Level/PatrolWaypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.146, 1.96814, -15.9139)
+
+[node name="Waypoint 2" type="Node3D" parent="Level/PatrolWaypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7609, 1.96814, -10.181)
+
+[node name="Waypoint 3" type="Node3D" parent="Level/PatrolWaypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.7609, 1.96814, 15.9574)
+
+[node name="Waypoint 4" type="Node3D" parent="Level/PatrolWaypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.7976, 1.96814, 15.9574)
